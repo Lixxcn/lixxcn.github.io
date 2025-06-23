@@ -166,17 +166,6 @@
   transform: scale(1.1) rotate(5deg);
 }
 
-/* 导航栏和页面切换动画美化 */
-.navbar {
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1) !important;
-  transition: all 0.3s ease;
-}
-
-[data-theme='dark'] .navbar {
-  background: rgba(30, 41, 59, 0.95) !important;
-}
 
 /* 导航栏链接动画效果 */
 .navbar__item {
