@@ -44,9 +44,17 @@
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .hero::before {
@@ -62,8 +70,13 @@
 }
 
 @keyframes twinkle {
-  0% { opacity: 0.5; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .hero__title {
@@ -88,6 +101,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -219,6 +233,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -291,8 +306,21 @@ pre {
   .hero__title {
     font-size: 2.5rem !important;
   }
-  
+
   .hero__subtitle {
     font-size: 1.1rem !important;
   }
+}
+
+.main-wrapper h1,
+.markdown>h1 {
+  font-size: 2.2em;
+}
+
+.markdown>h2 {
+  font-size: 1.5em;
+}
+
+.markdown>h3 {
+  font-size: 1.2em;
 }
