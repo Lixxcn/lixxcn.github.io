@@ -9,7 +9,7 @@ import rehypeKatex from 'rehype-katex';
 const config: Config = {
   title: 'Lixx',
   tagline: '✨ 在代码与文字间编织梦想，用技术点亮生活的每一个瞬间',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/lixx-favicon.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -78,20 +78,21 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Lixx',
+      // title: 'Lixx',
       logo: {
         alt: 'Lixx Logo',
-        src: 'img/logo.svg',
+        src: 'img/Lixx_Blog_day_1.png',
+        srcDark: 'img/Lixx_Blog_dark_1.png',
       },
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: '文档',
+          label: '知识库',
         },
-        { to: '/blog', label: '博客', position: 'left' },
-        { to: '/about', label: '关于', position: 'left' },
+        { to: '/blog', label: '随想录', position: 'left' },
+        { to: '/about', label: '自画像', position: 'left' },
         {
           href: 'https://github.com/Lixxcn',
           label: 'GitHub',
@@ -103,10 +104,10 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: '文档',
+          title: '知识库',
           items: [
             {
-              label: '技术文档',
+              label: '知识库入口',
               to: '/docs/intro',
             },
           ],
@@ -124,11 +125,11 @@ const config: Config = {
           title: '更多',
           items: [
             {
-              label: '博客',
+              label: '随想录',
               to: '/blog',
             },
             {
-              label: '关于',
+              label: '自画像',
               to: '/about',
             },
             {
