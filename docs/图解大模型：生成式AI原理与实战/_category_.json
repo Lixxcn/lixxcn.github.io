@@ -1,8 +1,8 @@
 {
-  "label": "图解大模型：生成式AI原理与实战（200问）",
-  "position": 2,
-  "link": {
-    "type": "generated-index",
-    "description": "本系列文档旨在通过问答的方式，深入浅出地讲解大模型的原理与实战，帮助读者快速掌握生成式AI的核心技术。"
-  }
+    "label": "图解大模型：生成式AI原理与实战（200问）",
+    "position": 2,
+    "link": {
+        "type": "generated-index",
+        "description": "本系列文档旨在通过问答的方式，深入浅出地讲解大模型的原理与实战，帮助读者快速掌握生成式AI的核心技术。 作者：gemini-2.5-pro-preview (0605)"
+    }
 }
