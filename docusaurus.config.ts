@@ -145,24 +145,56 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    algolia: {
+      // Algolia 提供的应用 ID
+      appId: '1MKJ9P3XPH',
+
+      // 公共 API 密钥：可以安全地提交
+      apiKey: '3bc6479ab7c3748ea66abf06bfa1abbc',
+
+      indexName: 'lixx',
+
+      // 可选：请参阅下面的文档部分
+      contextualSearch: true,
+
+      // 可选：指定在哪些域上导航应通过 window.location 而不是 history.push 进行。当我们的 Algolia 配置抓取多个文档站点并且我们希望使用 window.location.href 导航到它们时，这很有用。
+      externalUrlRegex: 'external\\.com|domain\\.com',
+
+      // 可选：替换来自 Algolia 的项目 URL 的部分内容。当对使用不同 baseUrl 的多个部署使用相同的搜索索引时很有用。您可以在 `from` 参数中使用正则表达式或字符串。例如：localhost:3000 与 myCompany.com/docs
+      // replaceSearchResultPathname: {
+      //   from: '/docs/', // or as RegExp: /\/docs\//
+      //   to: '/',
+      // },
+
+      // 可选：Algolia 搜索参数
+      searchParameters: {},
+
+      // 可选：默认启用的搜索页面的路径（`false` 可禁用）
+      searchPagePath: 'search',
+
+      // 可选：是否在 Docsearch 上启用 insights 功能（默认为 `false`）
+      insights: true,
+
+      //... 其他 Algolia 参数
+    },
   } satisfies Preset.ThemeConfig,
 
   plugins: [
-    [
-      require.resolve("@easyops-cn/docusaurus-search-local"),
-      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
-      ({
-        // ... Your options.
-        // `hashed` is recommended as long-term-cache of index file is possible.
-        hashed: true,
+    // [
+    //   require.resolve("@easyops-cn/docusaurus-search-local"),
+    //   /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+    //   ({
+    //     // ... Your options.
+    //     // `hashed` is recommended as long-term-cache of index file is possible.
+    //     hashed: true,
 
-        // For Docs using Chinese, it is recomended to set:
-        language: ["en", "zh"],
+    //     // For Docs using Chinese, it is recomended to set:
+    //     language: ["en", "zh"],
 
-        // If you're using `noIndex: true`, set `forceIgnoreNoIndex` to enable local index:
-        forceIgnoreNoIndex: true,
-      }),
-    ],
+    //     // If you're using `noIndex: true`, set `forceIgnoreNoIndex` to enable local index:
+    //     forceIgnoreNoIndex: true,
+    //   }),
+    // ],
   ],
 
   stylesheets: [
