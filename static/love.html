@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lixx ❤️ xixi | 我们的时光</title>
+    <style>
+        /* --- Google Fonts --- */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400&family=Zhi+Mang+Xing&display=swap');
+
+        /* --- 全局样式 --- */
+        :root {
+            --primary-color: #f7b2c5;
+            /* 柔和粉色 */
+            --secondary-color: #c9a7e1;
+            /* 淡雅紫色 */
+            --text-color: #efefef;
+            /* 文本颜色 */
+            --gold-color: #f7d794;
+            /* 温馨金色 */
+            --dark-bg: #1a1a2e;
+            /* 深邃夜空蓝 */
+            --darker-bg: #162447;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            position: relative;
+            /* For vignette */
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%);
+            pointer-events: none;
+            /* Ensure it doesn't interfere with interactions */
+            z-index: 2;
+        }
+
+        /* --- 动态粒子背景 --- */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* --- 主容器 --- */
+        .container {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- 标题 --- */
+        .title {
+            font-family: 'Zhi Mang Xing', cursive;
+            font-size: clamp(2.8rem, 9vw, 4.5rem);
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color), 0 0 25px var(--primary-color), 0 0 45px rgba(247, 178, 197, 0.5);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            background: linear-gradient(45deg, var(--primary-color), var(--gold-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+
+        /* --- 时间线 --- */
+        .timeline {
+            margin-bottom: 30px;
+        }
+
+        .timeline p {
+            font-size: 1rem;
+            margin: 5px 0;
+            opacity: 0.8;
+        }
+
+        .timeline strong {
+            color: var(--gold-color);
+            font-weight: 400;
+        }
+
+        /* --- 主计时器 --- */
+        .counter-box {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+            border-radius: 20px;
+            padding: 30px 40px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            margin-bottom: 30px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .counter-box p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        #days-together,
+        #days-married {
+            font-size: clamp(3rem, 15vw, 5rem);
+            font-weight: bold;
+            color: var(--gold-color);
+            text-shadow: 0 0 15px var(--gold-color);
+            margin: 10px 0;
+            line-height: 1;
+        }
+
+        .counter-box .unit {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-left: 10px;
+        }
+
+        /* --- 爱心互动 --- */
+        .heart-container {
+            position: relative;
+        }
+
+        #heart {
+            font-size: 60px;
+            /* 放大心形 */
+            color: #ff4757;
+            cursor: pointer;
+            animation: pulse 1.8s infinite ease-in-out;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                text-shadow: 0 0 8px #ff4757, 0 0 15px rgba(255, 71, 87, 1);
+            }
+
+            50% {
+                transform: scale(1.2);
+                text-shadow: 0 0 20px #ff4757, 0 0 35px rgba(255, 71, 87, 0.9), 0 0 50px rgba(255, 71, 87, 0.5);
+            }
+        }
+
+        #heart:hover {
+            transform: scale(1.3);
+        }
+
+        /* 飘落的爱心 */
+        .falling-heart {
+            position: fixed;
+            top: -10vh;
+            font-size: 20px;
+            color: var(--primary-color);
+            animation: fall linear forwards;
+            pointer-events: none;
+            /* 确保不影响点击 */
+            z-index: 999;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(120vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* --- 时光信笺 --- */
+        .letter-box {
+            margin-top: 20px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        #letter-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--secondary-color);
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Noto Sans SC', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #letter-toggle:hover {
+            background-color: var(--secondary-color);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--secondary-color);
+        }
+
+        .letter-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s ease-in-out, padding 0.8s ease-in-out, opacity 0.5s ease-in-out;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            margin-top: 20px;
+            padding: 0 30px;
+            line-height: 1.9;
+            text-align: left;
+            font-size: 1rem;
+            font-family: 'Zhi Mang Xing', cursive;
+            opacity: 0;
+        }
+
+        .letter-content.show {
+            max-height: 1000px;
+            /* 增加高度以显示所有内容 */
+            padding: 30px;
+            opacity: 1;
+            transition: max-height 0.8s ease-in-out, padding 0.8s ease-in-out, opacity 0.8s ease-in-out 0.2s;
+        }
+
+        .letter-content p {
+            margin-bottom: 1em;
+        }
+
+        .letter-content .signature {
+            text-align: right;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+        /* --- 音乐播放器 (已注释) --- */
+        /* #music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        #music-control svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-color);
+        } */
+    </style>
+</head>
+
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <main class="container">
+
+        <h1 class="title">
+            Lixx
+            <div class="heart-container">
+                <div id="heart">❤</div>
+            </div>
+            xixi
+        </h1>
+
+        <div class="timeline">
+            <p>从 <strong>2021年7月25日</strong>，我们的故事开始</p>
+            <p>在 <strong>2024年4月2日</strong>，我们许下永恒</p>
+        </div>
+
+        <div class="counter-box">
+            <p>我们已经相爱了</p>
+            <div>
+                <span id="days-together">0</span><span class="unit">天</span>
+            </div>
+        </div>
+
+        <div class="counter-box" id="married-box" style="display: none;">
+            <p>我们结婚啦</p>
+            <div>
+                <span id="days-married">0</span><span class="unit">天</span>
+            </div>
+        </div>
+
+        <div class="letter-box">
+            <button id="letter-toggle">我们的时光信笺</button>
+            <div id="letter-content" class="letter-content">
+                <p>亲爱的 xixi,</p>
+                <p>每当看到这个页面上的数字一天天增加，我的心中就充满了无尽的幸福与感激。从我们相遇的那一刻起，我的世界便因你而变得绚烂多彩。我们一起走过的每一个日夜，都是我生命中最宝贵的珍藏。</p>
+                <p>时间见证了我们的成长，从最初的悸动到如今的相守。这个小小的页面，是我用代码写下的情书，它会永远记录下我们爱的足迹。愿我们的未来，如这片星空般璀璨，如这颗心般炽热。</p>
+                <p class="signature">永远爱你的, <br>Lixx</p>
+
+            </div>
+        </div>
+
+    </main>
+
+    
+    <audio id="bg-music" loop>
+        <!-- 
+            重要提示：请在这里替换成你的音乐文件链接！
+            你可以上传一首歌到你的云存储（如GitHub, Vercel等）然后把链接放进来。
+            例如: <source src="https://your-music-url.com/song.mp3" type="audio/mpeg">
+            由于浏览器安全策略，音乐需要用户交互（如点击）后才能自动播放。
+        -->
+        <source src="" type="audio/mpeg">
+    </audio>
+
+    <!-- <div id="music-control">
+        <svg id="play-icon" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+        </svg>
+        <svg id="pause-icon" viewBox="0 0 24 24" style="display:none;">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+        </svg>
+    </div> -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // --- 日期计算 ---
+            const startDate = new Date('2021-07-25T00:00:00');
+            const marriageDate = new Date('2024-04-02T00:00:00');
+
+            const daysTogetherEl = document.getElementById('days-together');
+            const daysMarriedEl = document.getElementById('days-married');
+            const marriedBoxEl = document.getElementById('married-box');
+
+            let initialLoad = true;
+
+            function animateCounter(element, endValue) {
+                let startValue = 0;
+                const duration = 2000; // 动画持续时间 (ms)
+                const frameDuration = 1000 / 60; // 60 FPS
+                const totalFrames = Math.round(duration / frameDuration);
+                const increment = endValue / totalFrames;
+
+                let currentFrame = 0;
+
+                const counter = () => {
+                    currentFrame++;
+                    const currentValue = Math.round(increment * currentFrame);
+
+                    if (currentFrame === totalFrames) {
+                        element.textContent = endValue;
+                        return;
+                    }
+
+                    element.textContent = currentValue;
+                    requestAnimationFrame(counter);
+                };
+                requestAnimationFrame(counter);
+            }
+
+            function updateCounters() {
+                const now = new Date();
+
+                // 计算相爱天数
+                const diffTogether = now - startDate;
+                const daysTogether = Math.floor(diffTogether / (1000 * 60 * 60 * 24));
+
+                // 计算结婚天数
+                const diffMarried = now - marriageDate;
+                const daysMarried = Math.floor(diffMarried / (1000 * 60 * 60 * 24));
+
+                if (initialLoad) {
+                    animateCounter(daysTogetherEl, daysTogether);
+                    if (now >= marriageDate) {
+                        marriedBoxEl.style.display = 'block';
+                        animateCounter(daysMarriedEl, daysMarried);
+                    }
+                    initialLoad = false;
+                } else {
+                    daysTogetherEl.textContent = daysTogether;
+                    if (now >= marriageDate) {
+                        marriedBoxEl.style.display = 'block';
+                        daysMarriedEl.textContent = daysMarried;
+                    }
+                }
+            }
+
+            updateCounters();
+            setInterval(updateCounters, 1000 * 60 * 60); // 每小时更新一次
+
+            // --- 爱心飘落互动 ---
+            const heart = document.getElementById('heart');
+            heart.addEventListener('click', () => {
+                for (let i = 0; i < 20; i++) {
+                    createFallingHeart();
+                }
+            });
+
+            function createFallingHeart() {
+                const heartEl = document.createElement('div');
+                heartEl.classList.add('falling-heart');
+                heartEl.innerHTML = '❤';
+                heartEl.style.left = Math.random() * 100 + 'vw';
+                heartEl.style.animationDuration = Math.random() * 3 + 4 + 's'; // 4-7秒
+                heartEl.style.fontSize = Math.random() * 10 + 10 + 'px';
+                heartEl.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(heartEl);
+
+                setTimeout(() => {
+                    heartEl.remove();
+                }, 7000); // 动画结束后移除元素
+            }
+
+            // --- 时光信笺展开/收起 ---
+            const letterToggle = document.getElementById('letter-toggle');
+            const letterContent = document.getElementById('letter-content');
+            letterToggle.addEventListener('click', () => {
+                letterContent.classList.toggle('show');
+                if (letterContent.classList.contains('show')) {
+                    letterToggle.textContent = '收起信笺';
+                    setTimeout(() => {
+                        letterContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 200);
+                } else {
+                    letterToggle.textContent = '我们的时光信笺';
+                }
+            });
+
+            // --- 背景音乐控制 (已注释) ---
+            // const musicControl = document.getElementById('music-control');
+            // const music = document.getElementById('bg-music');
+            // const playIcon = document.getElementById('play-icon');
+            // const pauseIcon = document.getElementById('pause-icon');
+
+            // musicControl.addEventListener('click', () => {
+            //     if (music.paused) {
+            //         // 检查src是否为空，如果为空，则不播放并提示
+            //         if (music.currentSrc === '' || music.currentSrc === window.location.href) {
+            //             alert('主人，你还没有为我们设置背景音乐哦！请在HTML代码中添加音乐链接。');
+            //             return;
+            //         }
+            //         music.play();
+            //         playIcon.style.display = 'none';
+            //         pauseIcon.style.display = 'block';
+            //     } else {
+            //         music.pause();
+            //         playIcon.style.display = 'block';
+            //         pauseIcon.style.display = 'none';
+            //     }
+            // });
+
+            // --- 动态粒子背景 ---
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let particlesArray, shootingStars;
+
+            const mouse = {
+                x: null,
+                y: null,
+                radius: (canvas.height / 100) * (canvas.width / 100)
+            };
+
+            window.addEventListener('mousemove', function (event) {
+                mouse.x = event.x;
+                mouse.y = event.y;
+            });
+
+            class Particle {
+                constructor(x, y, directionX, directionY, size, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.directionX = directionX;
+                    this.directionY = directionY;
+                    this.size = size;
+                    this.color = color;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width || this.x < 0) {
+                        this.directionX = -this.directionX;
+                    }
+                    if (this.y > canvas.height || this.y < 0) {
+                        this.directionY = -this.directionY;
+                    }
+
+                    // check mouse collision
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius + this.size) {
+                        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
+                            this.x += 5;
+                        }
+                        if (mouse.x > this.x && this.x > this.size * 10) {
+                            this.x -= 5;
+                        }
+                        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
+                            this.y += 5;
+                        }
+                        if (mouse.y > this.y && this.y > this.size * 10) {
+                            this.y -= 5;
+                        }
+                    }
+
+                    this.x += this.directionX;
+                    this.y += this.directionY;
+                    this.draw();
+                }
+            }
+
+            class ShootingStar {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = 0;
+                    this.len = (Math.random() * 80) + 10;
+                    this.speed = (Math.random() * 10) + 6;
+                    this.size = (Math.random() * 1) + 0.1;
+                    this.waitTime = new Date().getTime() + (Math.random() * 3000) + 500;
+                    this.active = false;
+                }
+                update() {
+                    if (this.active) {
+                        this.x -= this.speed;
+                        this.y += this.speed;
+                        if (this.x < 0 || this.y >= canvas.height) {
+                            this.reset();
+                        }
+                    } else {
+                        if (this.waitTime < new Date().getTime()) {
+                            this.active = true;
+                        }
+                    }
+                }
+                draw() {
+                    if (this.active) {
+                        const gradient = ctx.createLinearGradient(this.x, this.y, this.x + this.len, this.y - this.len);
+                        gradient.addColorStop(0, "rgba(255, 229, 180, 0.0)");
+                        gradient.addColorStop(1, "rgba(255, 229, 180, 0.6)");
+                        ctx.strokeStyle = gradient;
+                        ctx.lineWidth = this.size;
+                        ctx.beginPath();
+                        ctx.moveTo(this.x, this.y);
+                        ctx.lineTo(this.x + this.len, this.y - this.len);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            function init() {
+                particlesArray = [];
+                let numberOfParticles = (canvas.height * canvas.width) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 2) + 0.5;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let directionX = (Math.random() * 0.4) - 0.2;
+                    let directionY = (Math.random() * 0.4) - 0.2;
+                    let color = 'rgba(247, 178, 197, 0.6)';
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+
+                shootingStars = [];
+                let shootingStarAmount = (canvas.width / 500); // More stars on wider screens
+                for (let i = 0; i < shootingStarAmount; i++) {
+                    shootingStars.push(new ShootingStar());
+                }
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+                for (let star of shootingStars) {
+                    star.update();
+                    star.draw();
+                }
+                connect();
+            }
+
+            function connect() {
+                let opacityValue = 1;
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a; b < particlesArray.length; b++) {
+                        let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) +
+                            ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                        if (distance < (canvas.width / 8) * (canvas.height / 8)) {
+                            opacityValue = 1 - (distance / 15000);
+                            ctx.strokeStyle = 'rgba(247, 178, 197,' + opacityValue + ')';
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            init();
+            animate();
+
+            window.addEventListener('resize', function () {
+                canvas.width = innerWidth;
+                canvas.height = innerHeight;
+                mouse.radius = (canvas.height / 100) * (canvas.width / 100);
+                init();
+            });
+        });
+    </script>
+</body>
+
+</html>
