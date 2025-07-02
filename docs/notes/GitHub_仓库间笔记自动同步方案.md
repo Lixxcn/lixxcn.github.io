@@ -27,7 +27,7 @@
 
 1. **Deploy Key 的选择 (推荐):**
 
-   * **在哪里生成？** Deploy Key 是绑定到**单个仓库**的。所以，你应该在 `lixxcn.github.io` 这个公开仓库中生成 Deploy Key。
+   * **在哪里生成？** Deploy Key 是绑定到**单个仓库**的。所以，你应该在 `lixxcn.github.io` 这个公开仓库中生成 Deploy Key。![image.png](/assets/bc2d757f-a145-4ea5-a319-ab64a6622d90.png)
    * **权限设置？** 在生成时，务必勾选 **"Allow write access"**，因为 `note-gen-sync` 的 Actions 需要向 `lixxcn.github.io` 推送文件。
    * **私钥存放在哪里？** 将 `lixxcn.github.io` 生成的 Deploy Key 的**私钥**，存放到 `note-gen-sync` 这个**私有仓库**的 GitHub Secrets 中。这样，只有在 `note-gen-sync` 仓库中运行的 Actions 才能访问这个密钥。
    * **安全性：** Deploy Key 仅授权对一个特定仓库的访问。即使 `note-gen-sync` 的 Secrets 泄露了，这个密钥也只能作用于 `lixxcn.github.io` 仓库，而不能访问你其他任何仓库。
