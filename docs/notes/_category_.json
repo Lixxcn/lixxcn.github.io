@@ -1,0 +1,10 @@
+{
+    "label": "Lixx Notes",
+    "position": 2,
+    "link": {
+        "type": "generated-index",
+        "title": "Lixx Notes",
+        "slug": "/notes",
+        "description": "Lixx Notes 是一个个人笔记项目，旨在记录和分享各种技术、生活和学习方面的知识。内容包括编程、AI、生活技巧等，欢迎阅读和交流。"
+    }
+}
